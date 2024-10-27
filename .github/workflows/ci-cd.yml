@@ -1,0 +1,42 @@
+name: Deploy to AWS
+
+on: 
+  push:
+    branches:
+      - main  # Cambia esto si quieres que se ejecute en otra rama
+      # - otra-rama
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'  # Cambia la versión de Node.js según sea necesario
+
+      - name: Install dependencies
+        run: |
+          cd boletas-pdf # Cambia esto a la carpeta donde está tu serverless
+          npm install
+
+      - name: Run tests
+        run: |
+          cd boletas-pdf
+          serverless invoke local -f generateBoleta --data '{"body": "{\"grupo\": \"Grupo 12\", \"usuario\": { \"nombre\": \"Juan Perez\", \"email\": \"juan@example.com\" }, \"partido\": {\"equipo1\": \"Equipo A\", \"equipo2\": \"Equipo B\", \"fecha\": \"2024-10-26\", \"ubicacion\": \"Estadio Principal\"}, \"valorTotal\": 150.00}"}'
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1  # Cambia la región según tu configuración
+
+      - name: Deploy to AWS
+        run: |
+          cd boletas-pdf
+          serverless deploy
