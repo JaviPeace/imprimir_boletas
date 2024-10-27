@@ -8,7 +8,7 @@ module.exports.handler = async (event) => {
   const { liga, usuario, partido, valorTotal } = data;  
 
   const { nombre: nombreUsuario, email } = usuario;
-  const { equipo1, equipo2, ubicacion } = partido;
+  const { equipo1, equipo2} = partido;
 
   // Crear el PDF
   const pdfDoc = await PDFDocument.create();
@@ -21,8 +21,7 @@ page.drawText('Boleta emitida por el grupo 12', { x: 50, y: 640, size: 20, color
 page.drawText(`Liga: ${liga}`, { x: 50, y: 610, size: 15 });
 page.drawText(`Usuario: ${nombreUsuario} (${email})`, { x: 50, y: 580, size: 15 });
 page.drawText(`Partido: ${equipo1} vs ${equipo2}`, { x: 50, y: 550, size: 15 });
-page.drawText(`Ubicación: ${ubicacion}`, { x: 50, y: 520, size: 15 });
-page.drawText(`Valor Total: $${valorTotal.toFixed(2)}`, { x: 50, y: 490, size: 15 });
+page.drawText(`Valor Total: $${valorTotal.toFixed(2)}`, { x: 50, y: 520, size: 15 });
 
 
   const pdfBytes = await pdfDoc.save();
@@ -57,7 +56,7 @@ page.drawText(`Valor Total: $${valorTotal.toFixed(2)}`, { x: 50, y: 490, size: 1
 
 
 
-// serverless invoke local -f generateBoleta --data '{"body": "{\"liga\": \"Grupo 12\", \"usuario\": { \"nombre\": \"Juan Perez\", \"email\": \"juan@example.com\" }, \"partido\": {\"equipo1\": \"Equipo A\", \"equipo2\": \"Equipo B\", \"ubicacion\": \"Estadio Principal\"}, \"valorTotal\": 150.00}"}'
+// serverless invoke local -f generateBoleta --data '{"body": "{\"liga\": \"Grupo 12\", \"usuario\": { \"nombre\": \"Juan Perez\", \"email\": \"juan@example.com\" }, \"partido\": {\"equipo1\": \"Equipo A\", \"equipo2\": \"Equipo B\"}, \"valorTotal\": 150.00}"}'
 
 
 //  POST https://hircp5fjud.execute-api.us-east-1.amazonaws.com/dev/generateBoleta
