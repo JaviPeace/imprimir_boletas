@@ -27,8 +27,16 @@ jobs:
         run: |
           npm install -g serverless 
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1  
+
       - name: Configure Serverless with access key
         run: |
+          cd boletas-pdf
           serverless config credentials --provider serverless --key ${{ secrets.SERVERLESS_ACCESS_KEY }}
 
       - name: Run tests
@@ -36,12 +44,6 @@ jobs:
           cd boletas-pdf
           serverless invoke local -f generateBoleta --data '{"body": "{\"grupo\": \"Grupo 12\", \"usuario\": { \"nombre\": \"Juan Perez\", \"email\": \"juan@example.com\" }, \"partido\": {\"equipo1\": \"Equipo A\", \"equipo2\": \"Equipo B\", \"fecha\": \"2024-10-26\", \"ubicacion\": \"Estadio Principal\"}, \"valorTotal\": 150.00}"}'
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1  
 
       - name: Deploy to AWS
         run: |
