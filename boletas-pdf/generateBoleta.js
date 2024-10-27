@@ -42,7 +42,12 @@ page.drawText(`Valor Total: $${valorTotal.toFixed(2)}`, { x: 50, y: 520, size: 1
       body: JSON.stringify({
         message: 'Boleta generada y guardada en S3',
         s3Url: `https://${bucketName}.s3.amazonaws.com/${fileName}`
-      })
+      }),
+      headers: {
+        'Access-Control-Allow-Origin': '*', 
+        'Access-Control-Allow-Methods': 'POST',
+        'Content-Type': 'application/json'
+      }
     };
   } catch (error) {
     console.error("Error al guardar la boleta en S3:", error);
