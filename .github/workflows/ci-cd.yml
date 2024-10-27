@@ -23,10 +23,9 @@ jobs:
           cd boletas-pdf 
           npm install
 
-
       - name: Install Serverless globally
         run: |
-          npm install -g serverless  # Instala Serverless globalmente
+          npm install -g serverless 
 
       - name: Configure Serverless with access key
         run: |
