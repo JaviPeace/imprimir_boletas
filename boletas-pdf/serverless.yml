@@ -2,22 +2,6 @@
 org: grupo12
 # "app" enables Serverless Framework Dashboard features and sharing them with other Services.
 app: grupo12
-# "service" is the name of this project. This will also be added to your AWS resource names.
-# service: boletas-pdf
-
-# provider:
-#   name: aws
-#   runtime: nodejs20.x
-
-# functions:
-#   hello:
-#     handler: handler.hello
-#     events:
-#       - httpApi:
-#           path: /
-#           method: get
-
-
 
 service: boleta-service
 
@@ -32,7 +16,7 @@ provider:
           "Action": 
           - s3:PutObject
           - s3:PutObjectAcl 
-          Resource: arn:aws:s3:::imprimir-boletas/* # Cambia con el nombre de tu bucket
+          Resource: arn:aws:s3:::imprimir-boletas/* 
           
 functions:
   generateBoleta:

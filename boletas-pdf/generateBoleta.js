@@ -7,23 +7,22 @@ module.exports.handler = async (event) => {
   const data = JSON.parse(event.body);
   const { liga, usuario, partido, valorTotal } = data;  
 
-  const { nombre: nombreUsuario } = usuario;
-  const { equipo1, equipo2, fecha, ubicacion } = partido;
+  const { nombre: nombreUsuario, email } = usuario;
+  const { equipo1, equipo2, ubicacion } = partido;
 
   // Crear el PDF
   const pdfDoc = await PDFDocument.create();
   const page = pdfDoc.addPage([500, 700]);
 
  // Agregar título
-page.drawText('Boleta emitida por el grupo 12', { x: 50, y: 680, size: 20, color: rgb(0.1176, 0.5098, 0.7843) }); 
+page.drawText('Boleta emitida por el grupo 12', { x: 50, y: 640, size: 20, color: rgb(0.1176, 0.5098, 0.7843) }); 
 
 // Resto del contenido
-page.drawText(`Liga: ${liga}`, { x: 50, y: 650, size: 15 });
-page.drawText(`Usuario: ${nombreUsuario}`, { x: 50, y: 620, size: 15 });
-page.drawText(`Partido: ${equipo1} vs ${equipo2}`, { x: 50, y: 590, size: 15 });
-page.drawText(`Fecha: ${fecha}`, { x: 50, y: 560, size: 15 });
-page.drawText(`Ubicación: ${ubicacion}`, { x: 50, y: 530, size: 15 });
-page.drawText(`Valor Total: $${valorTotal.toFixed(2)}`, { x: 50, y: 500, size: 15 });
+page.drawText(`Liga: ${liga}`, { x: 50, y: 610, size: 15 });
+page.drawText(`Usuario: ${nombreUsuario} (${email})`, { x: 50, y: 580, size: 15 });
+page.drawText(`Partido: ${equipo1} vs ${equipo2}`, { x: 50, y: 550, size: 15 });
+page.drawText(`Ubicación: ${ubicacion}`, { x: 50, y: 520, size: 15 });
+page.drawText(`Valor Total: $${valorTotal.toFixed(2)}`, { x: 50, y: 490, size: 15 });
 
 
   const pdfBytes = await pdfDoc.save();
@@ -58,7 +57,7 @@ page.drawText(`Valor Total: $${valorTotal.toFixed(2)}`, { x: 50, y: 500, size: 1
 
 
 
-// serverless invoke local -f generateBoleta --data '{"body": "{\"grupo\": \"Grupo 12\", \"usuario\": { \"nombre\": \"Juan Perez\", \"email\": \"juan@example.com\" }, \"partido\": {\"equipo1\": \"Equipo A\", \"equipo2\": \"Equipo B\", \"fecha\": \"2024-10-26\", \"ubicacion\": \"Estadio Principal\"}, \"valorTotal\": 150.00}"}'
+// serverless invoke local -f generateBoleta --data '{"body": "{\"liga\": \"Grupo 12\", \"usuario\": { \"nombre\": \"Juan Perez\", \"email\": \"juan@example.com\" }, \"partido\": {\"equipo1\": \"Equipo A\", \"equipo2\": \"Equipo B\", \"ubicacion\": \"Estadio Principal\"}, \"valorTotal\": 150.00}"}'
 
 
 //  POST https://hircp5fjud.execute-api.us-east-1.amazonaws.com/dev/generateBoleta
