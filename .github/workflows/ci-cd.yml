@@ -29,7 +29,6 @@ jobs:
 
       - name: Configure Serverless with access key
         run: |
-          cd boletas-pdf 
           serverless config credentials --provider serverless --key ${{ secrets.SERVERLESS_ACCESS_KEY }}
 
       - name: Run tests
