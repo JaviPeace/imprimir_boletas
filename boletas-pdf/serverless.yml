@@ -1,0 +1,44 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: grupo12
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: grupo12
+# "service" is the name of this project. This will also be added to your AWS resource names.
+# service: boletas-pdf
+
+# provider:
+#   name: aws
+#   runtime: nodejs20.x
+
+# functions:
+#   hello:
+#     handler: handler.hello
+#     events:
+#       - httpApi:
+#           path: /
+#           method: get
+
+
+
+service: boleta-service
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          "Action": 
+          - s3:PutObject
+          - s3:PutObjectAcl 
+          Resource: arn:aws:s3:::imprimir-boletas/* # Cambia con el nombre de tu bucket
+          
+functions:
+  generateBoleta:
+    handler: generateBoleta.handler
+    events:
+      - http:
+          path: /generateBoleta
+          method: post
+          cors: true
