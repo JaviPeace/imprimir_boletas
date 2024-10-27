@@ -28,6 +28,10 @@ jobs:
         run: |
           npm install -g serverless  # Instala Serverless globalmente
 
+      - name: Configure Serverless with access key
+        run: |
+          serverless config credentials --provider serverless --key ${{ secrets.SERVERLESS_ACCESS_KEY }}
+
       - name: Run tests
         run: |
           cd boletas-pdf
