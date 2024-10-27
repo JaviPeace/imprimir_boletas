@@ -1,0 +1,44 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20' 
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1 
+
+      - name: Run tests
+        run: |
+          response=$(serverless invoke local -f generateBoleta --data '{"body": "{\"grupo\": \"Grupo 12\", \"usuario\": { \"nombre\": \"Juan Perez\", \"email\": \"juan@example.com\" }, \"partido\": {\"equipo1\": \"Equipo A\", \"equipo2\": \"Equipo B\", \"fecha\": \"2024-10-26\", \"ubicacion\": \"Estadio Principal\"}, \"valorTotal\": 150.00}"}')
+          echo "Response: $response"
+          expected_response='{"message":"Boleta generada y guardada en S3","s3Url":"https://imprimir-boletas.s3.amazonaws.com/boletas/Grupo%2012/Juan%20Perez-Equipo%20A-vs-Equipo%20B.pdf","valorTotal":150.00}'
+          if [[ "$response" != *"$expected_response"* ]]; then
+            echo "Test failed! Unexpected response."
+            exit 1
+          else
+            echo "Test passed!"
+          fi
+
+      - name: Deploy to AWS
+        run: serverless deploy
