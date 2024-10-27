@@ -57,4 +57,4 @@ module.exports.handler = async (event) => {
 // serverless invoke local -f generateBoleta --data '{"body": "{\"grupo\": \"Grupo 12\", \"usuario\": { \"nombre\": \"Juan Perez\", \"email\": \"juan@example.com\" }, \"partido\": {\"equipo1\": \"Equipo A\", \"equipo2\": \"Equipo B\", \"fecha\": \"2024-10-26\", \"ubicacion\": \"Estadio Principal\"}, \"valorTotal\": 150.00}"}'
 
 
-//  https://hircp5fjud.execute-api.us-east-1.amazonaws.com/dev/generateBoleta
+//  POST https://hircp5fjud.execute-api.us-east-1.amazonaws.com/dev/generateBoleta
